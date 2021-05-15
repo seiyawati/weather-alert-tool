@@ -1,15 +1,14 @@
-require "open-uri"
 require "json"
+require "open-uri"
 require_relative "../config"
 require_relative "location"
-require_relative "geocode_api_client"
 
 class OpenweathermapAPIClient
 
   BASE_URL = "http://api.openweathermap.org/data/2.5/onecall"
 
   def initialize(address)
-    @location = Location.new(GeocodeAPIClient.new(address).response_geocode_api)
+    @location = Location.new(address)
   end
 
   def request_openweathermap_api

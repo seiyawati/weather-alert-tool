@@ -1,6 +1,7 @@
 require 'json'
 require 'uri'
 require 'open-uri'
+require_relative '../config'
 
 class GeocodeAPIClient
 

@@ -7,9 +7,9 @@ class WeatherForecastTool
 
   def initialize(current_location, destination, forecast_time)
     @current_location = current_location
-    @current_location_weather_forecast = WeatherForecast.new(OpenweathermapAPIClient.new(current_location).response_openweathermap_api)
+    @current_location_weather_forecast = WeatherForecast.new(current_location)
     @destination = destination
-    @destination_weather_forecast = WeatherForecast.new(OpenweathermapAPIClient.new(destination).response_openweathermap_api)
+    @destination_weather_forecast = WeatherForecast.new(destination)
     @forecast_time = forecast_time
   end
 
@@ -19,12 +19,6 @@ class WeatherForecastTool
       #{display_now_weather_forecast}
       注意事項！
       #{display_alert}
-    TEXT
-  end
-
-  def self.usage
-    <<~TEXT
-
     TEXT
   end
 
