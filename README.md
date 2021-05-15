@@ -1,6 +1,6 @@
 # Weather Alert
 
-1日の始まりに天気に関する不安を解消するCLIアプリです。  
+1日の始まりに天気に関する不安を解消するアプリです。  
 1日における天候に関する注意事項を警告してくれます。  
 
 ## 作成動機
@@ -10,8 +10,9 @@
 ## 設計
 
 ディレクトリ構成
-- classes/geocoding.rb
-- classes/openweathermap.rb
+- classes/location.rb
+- classes/geocode_api_client.rb
+- classes/openweathermap_api_client.rb
 - classes/weather_forecast.rb
 - config.rb
 - weather_forecast_tool.rb
