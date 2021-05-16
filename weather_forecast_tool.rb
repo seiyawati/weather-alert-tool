@@ -22,6 +22,15 @@ class WeatherForecastTool
     TEXT
   end
 
+  def self.usage
+    puts <<~TEXT
+      ~~~~~~~~~~~~~~~~~~~~~~使い方~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      第1引数：出発地点の住所（ex. 東京都世田谷区松原）
+      第2引数：出先の住所（ex. 東京都港区六本木）
+      第3引数：外出予定時間（ex. 9時間）時単位で入力してください。
+    TEXT
+  end
+
   private
 
   def display_now_weather_forecast
@@ -82,6 +91,8 @@ class WeatherForecastTool
 end
 
 if __FILE__ == $0
+  return WeatherForecastTool.usage if ARGV[0] == 'help'
+
   weather_forecast_tool = WeatherForecastTool.new(ARGV[0], ARGV[1], ARGV[2].to_i)
   weather_forecast_tool.run
 end
