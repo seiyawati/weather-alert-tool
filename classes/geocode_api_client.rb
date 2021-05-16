@@ -2,8 +2,11 @@ require 'json'
 require 'uri'
 require 'open-uri'
 require_relative '../config'
+require_relative '../exceptions/api_exceptions'
 
 class GeocodeAPIClient
+
+  include APIExceptions
 
   BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json"
 
@@ -25,9 +28,8 @@ class GeocodeAPIClient
 
   def response_geocode_api
     response = request_geocode_api
-    if response_status(response) != 'OK'
-      raise "#{response_status(response)}：緯度経度の取得に失敗しました。"
-    end
+    raise GeocodeAPIError, "GeocodeAPIから正しい応答がありませんでした。" if response_status(response) != 'OK'
+
     response
   end
 end

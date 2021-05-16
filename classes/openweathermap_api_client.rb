@@ -5,6 +5,8 @@ require_relative "location"
 
 class OpenweathermapAPIClient
 
+  include APIExceptions
+
   BASE_URL = "http://api.openweathermap.org/data/2.5/onecall"
 
   def initialize(address)
@@ -23,15 +25,10 @@ class OpenweathermapAPIClient
     parse_response(response)['status'].to_i
   end
 
-  def response_message(response)
-    parse_response(response)['message']
-  end
-
   def response_openweathermap_api
     response = request_openweathermap_api
-    if response_status(response) != 0
-      raise "#{response_message(response)}"
-    end
+    raise OpenweathermapAPIError, "OpenweathermapAPIから正しい応答がありませんでした。" if response_status(response) != 0
+    
     response
   end
 end
