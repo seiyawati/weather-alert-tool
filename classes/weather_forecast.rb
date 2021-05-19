@@ -1,7 +1,6 @@
-require 'json'
-require_relative 'openweathermap_api_client'
-
 class WeatherForecast
+  
+  attr_reader :now_weather_condition, :now_weather_condition_detail, :hourly_weather_conditions
 
   WEATHER_LANGUAGE_SUPPORT = {
     Thunderstorm: '雷雨',
@@ -21,23 +20,9 @@ class WeatherForecast
     Tornado: '竜巻'
   }
 
-  def initialize(address)
-    @response_openweathermap_api = OpenweathermapAPIClient.new(address).response_openweathermap_api
-  end
-
-  def parse_response_openweathermap_api
-    JSON.parse(@response_openweathermap_api)
-  end
-
-  def now_weather_condition
-    WEATHER_LANGUAGE_SUPPORT[parse_response_openweathermap_api["current"]["weather"][0]["main"].to_sym]
-  end
-
-  def now_weather_condition_detail
-    parse_response_openweathermap_api["current"]["weather"][0]["description"]
-  end
-
-  def hourly_weather_conditions
-    parse_response_openweathermap_api["hourly"]
+  def initialize(now_weather_condition, now_weather_condition_detail, hourly_weather_conditions)
+    @now_weather_condition = WEATHER_LANGUAGE_SUPPORT[now_weather_condition.to_sym]
+    @now_weather_condition_detail = now_weather_condition_detail
+    @hourly_weather_conditions = hourly_weather_conditions
   end
 end

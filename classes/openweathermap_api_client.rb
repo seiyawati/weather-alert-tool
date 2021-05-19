@@ -1,7 +1,9 @@
-require "json"
-require "open-uri"
-require_relative "../config"
-require_relative "location"
+require 'json'
+require 'open-uri'
+require_relative 'geocode_api_client'
+require_relative 'weather_forecast'
+require_relative '../config'
+require_relative '../exceptions/api_exceptions'
 
 class OpenweathermapAPIClient
 
@@ -10,25 +12,17 @@ class OpenweathermapAPIClient
   BASE_URL = "http://api.openweathermap.org/data/2.5/onecall"
 
   def initialize(address)
-    @location = Location.new(address)
-  end
-
-  def request_openweathermap_api
-    open(BASE_URL + "?lat=#{@location.latitude}&lon=#{@location.longitude}&lang=ja&APPID=#{WEATHER_API_KEY}").read
-  end
-
-  def parse_response(response)
-    JSON.parse(response)
-  end
-
-  def response_status(response)
-    parse_response(response)['status'].to_i
+    @location = GeocodeAPIClient.new(address).response_location_data
   end
 
   def response_openweathermap_api
-    response = request_openweathermap_api
-    raise OpenweathermapAPIError, "OpenweathermapAPIから正しい応答がありませんでした。" if response_status(response) != 0
-    
-    response
+    open(BASE_URL + "?lat=#{@location.latitude}&lon=#{@location.longitude}&lang=ja&APPID=#{WEATHER_API_KEY}").read
+  end
+
+  def response_weather_forecast_data
+    result = JSON.parse(response_openweathermap_api)
+    raise OpenweathermapAPIError, "#{result['message']}" if result['status'].to_i != 0
+
+    WeatherForecast.new(result["current"]["weather"][0]["main"], result["current"]["weather"][0]["description"], result["hourly"])
   end
 end

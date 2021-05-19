@@ -1,6 +1,7 @@
 require 'json'
 require 'uri'
 require 'open-uri'
+require_relative 'location'
 require_relative '../config'
 require_relative '../exceptions/api_exceptions'
 
@@ -14,22 +15,14 @@ class GeocodeAPIClient
     @address = address
   end
 
-  def request_geocode_api
+  def response_geocode_api
     open(URI.encode(BASE_URL + "?address=#{@address}&key=" + GOOGLE_API_KEY)).read
   end
 
-  def parse_response(response)
-    JSON.parse(response)
-  end
+  def response_location_data
+    result = JSON.parse(response_geocode_api)
+    raise GeocodeAPIError, "#{result['error_message']}" if result['status'] != 'OK'
 
-  def response_status(response)
-    parse_response(response)['status']
-  end
-
-  def response_geocode_api
-    response = request_geocode_api
-    raise GeocodeAPIError, "GeocodeAPIから正しい応答がありませんでした。" if response_status(response) != 'OK'
-
-    response
+    Location.new(result['results'][0]['geometry']['location']['lat'], result['results'][0]['geometry']['location']['lng'])
   end
 end

@@ -1,15 +1,14 @@
 require 'json'
 require 'date'
 require_relative 'classes/openweathermap_api_client'
-require_relative 'classes/weather_forecast'
 
 class WeatherForecastTool
 
   def initialize(current_location, destination, forecast_time)
     @current_location = current_location
-    @current_location_weather_forecast = WeatherForecast.new(current_location)
+    @current_location_weather_forecast = OpenweathermapAPIClient.new(current_location).response_weather_forecast_data
     @destination = destination
-    @destination_weather_forecast = WeatherForecast.new(destination)
+    @destination_weather_forecast = OpenweathermapAPIClient.new(destination).response_weather_forecast_data
     @forecast_time = forecast_time
   end
 

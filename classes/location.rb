@@ -1,21 +1,9 @@
-require 'json'
-require_relative 'geocode_api_client'
-
 class Location
+  
+  attr_reader :latitude, :longitude
 
-  def initialize(address)
-    @response_geocode_api = GeocodeAPIClient.new(address).response_geocode_api
-  end
-
-  def parse_response_geocode_api
-    JSON.parse(@response_geocode_api)
-  end
-
-  def latitude
-    parse_response_geocode_api['results'][0]['geometry']['location']['lat']
-  end
-
-  def longitude
-    parse_response_geocode_api['results'][0]['geometry']['location']['lng']
+  def initialize(latitude, longitude)
+    @latitude = latitude
+    @longitude = longitude
   end
 end
