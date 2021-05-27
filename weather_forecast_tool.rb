@@ -1,4 +1,3 @@
-require 'json'
 require 'date'
 require_relative 'classes/weather_forecast'
 require_relative 'exceptions/exceptions'
@@ -54,49 +53,34 @@ class WeatherForecastTool
   end
 
   def alert_laundry
-    if ['晴れ', '曇'].include?(@current_location_weather_forecast.now_weather_condition)
-      @current_location_weather_forecast.hourly_weather_conditions.each_with_index do |weather_condition, i|
-
-        next if ['Clear', 'Clouds'].include?(weather_condition['weather'][0]['main'])
-
-        break if i == @forecast_time
-
-        return "これから天候が悪化するので洗濯物を回収してから出掛けましょう！"
-      end
-    end
+    "これから天候が悪化するので洗濯物を回収してから出掛けましょう！" if @current_location_weather_forecast.weather_forecast_to_worse?(@forecast_time)
   end
 
   def alert_umbrella
-    if ['晴れ', '曇'].include?(@destination_weather_forecast.now_weather_condition)
-      @destination_weather_forecast.hourly_weather_conditions.each_with_index do |weather_condition, i|
+    "出先で天候が悪化するので傘を持って出掛けましょう！" if @destination_weather_forecast.weather_forecast_to_worse?(@forecast_time)
+  end
 
-        next if ['Clear', 'Clouds'].include?(weather_condition['weather'][0]['main'])
-
-        break if i == @forecast_time
-
-        return "出先で天候が悪化するので傘を持って出掛けましょう！"
-      end
+  def alert
+    if alert_laundry.nil? && alert_umbrella.nil?
+      return <<~TEXT
+        特に注意事項はありません。
+        現在の天気をチェックして出掛けましょう。
+      TEXT
     end
+    
+    <<~TEXT
+      #{alert_laundry}
+      #{alert_umbrella}
+    TEXT
   end
 
   def display_alert
-    if alert_laundry || alert_umbrella
-      puts <<~TEXT
-        注意事項！
-        --------------------------------------------------------------------------
-        #{alert_laundry}
-        #{alert_umbrella}
-        --------------------------------------------------------------------------
-      TEXT
-    else
-      puts <<~TEXT
-        注意事項！
-        --------------------------------------------------------------------------
-        特に注意事項はありません。
-        現在の天気をチェックして出掛けましょう。
-        --------------------------------------------------------------------------
-      TEXT
-    end
+    puts <<~TEXT
+      注意事項！
+      --------------------------------------------------------------------------
+      #{alert}
+      --------------------------------------------------------------------------
+    TEXT
   end
 end
 
