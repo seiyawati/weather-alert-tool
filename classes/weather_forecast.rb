@@ -40,4 +40,14 @@ class WeatherForecast
     @now_weather_condition_detail = now_weather_condition_detail
     @hourly_weather_conditions = hourly_weather_conditions
   end
+
+  def weather_forecast_to_worse?(forecast_time)
+    return false unless ['晴れ', '曇'].include?(@now_weather_condition)
+
+    @hourly_weather_conditions.each_with_index do |weather_condition, i|
+      return false if i == forecast_time
+
+      return true unless ['Clear', 'Clouds'].include?(weather_condition['weather'][0]['main'])
+    end
+  end
 end
