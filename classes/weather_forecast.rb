@@ -48,6 +48,8 @@ class WeatherForecast
       return false if i == forecast_time
 
       return true unless ['Clear', 'Clouds'].include?(weather_condition['weather'][0]['main'])
+
+      next
     end
   end
 end

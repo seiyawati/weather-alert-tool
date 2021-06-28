@@ -53,15 +53,23 @@ class WeatherForecastTool
   end
 
   def alert_laundry
-    "これから天候が悪化するので洗濯物を回収してから出掛けましょう！" if @current_location_weather_forecast.weather_forecast_to_worse?(@forecast_time)
+    "これから天候が悪化するので洗濯物を回収してから出掛けましょう！"
   end
 
   def alert_umbrella
-    "出先で天候が悪化するので傘を持って出掛けましょう！" if @destination_weather_forecast.weather_forecast_to_worse?(@forecast_time)
+    "出先で天候が悪化するので傘を持って出掛けましょう！"
   end
 
   def alert
-    if alert_laundry.nil? && alert_umbrella.nil?
+    if @current_location_weather_forecast.weather_forecast_to_worse?(@forecast_time)
+      @alert_laundry = alert_laundry
+    end
+
+    if @destination_weather_forecast.weather_forecast_to_worse?(@forecast_time)
+      @alert_umbrella = alert_umbrella
+    end
+
+    if @alert_laundry.nil? && @alert_umbrella.nil?
       return <<~TEXT
         特に注意事項はありません。
         現在の天気をチェックして出掛けましょう。
@@ -69,8 +77,8 @@ class WeatherForecastTool
     end
     
     <<~TEXT
-      #{alert_laundry}
-      #{alert_umbrella}
+      #{@alert_laundry}
+      #{@alert_umbrella}
     TEXT
   end
 
