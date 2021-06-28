@@ -1,5 +1,5 @@
 require_relative 'openweathermap_api_client'
-require_relative '../exceptions/exceptions'
+require_relative '../exceptions/api_exceptions'
 
 class WeatherForecast
   include Exceptions

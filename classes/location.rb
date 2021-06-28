@@ -1,5 +1,5 @@
 require_relative 'geocode_api_client'
-require_relative '../exceptions/exceptions'
+require_relative '../exceptions/api_exceptions'
 
 class Location
   include Exceptions

@@ -1,6 +1,6 @@
 require 'date'
 require_relative 'classes/weather_forecast'
-require_relative 'exceptions/exceptions'
+require_relative 'exceptions/api_exceptions'
 
 class WeatherForecastTool
   include Exceptions
