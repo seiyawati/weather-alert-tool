@@ -28,8 +28,25 @@
 
 ## 使用方法
 
-OpenWeatherMapとGoogle Cloud Platformで取得したAPIキーを環境変数に格納する。  
-お使いのシェルで（ex. bin/bash）  
+リポジトリを下記コマンドでローカルに落とす。  
+```
+git clone https://github.com/seiyawati/weather-alert-tool.git
+```
+
+お使いのPCにDockerをインストールしてください。  
+Windows: https://docs.docker.jp/docker-for-windows/install.html  
+Mac: https://docs.docker.jp/docker-for-mac/install.html  
+
+コンテナをビルドして立ち上げる
+```
+docker-compose up -d --build
+```
+コンテナに入る
+```
+docker-compose exec app bash
+```
+
+OpenWeatherMapとGoogle Cloud Platformで取得したAPIキーを環境変数に格納する。   
 ```
 vim ~/.bashrc
 ```
